@@ -1,0 +1,19 @@
+﻿@model InstalacionModel;
+@{
+    ViewData["Title"] = "Insertar";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h1>Insertar</h1>
+
+<form asp-action="Insertar" asp-asp-controller="Instalacion" method="post">
+   <label>Capacidad del aula</label>
+    <input type="text" asp-for="capacidad" />
+   <label>Nombre del aula</label>
+    <input type="text" asp-for="nombre" />
+   <label>Numero del edificio</label>
+    <input type="text" asp-for="numedificio1"/>
+    <button type="submit">Enviar</button>
+
+    
+</form>
