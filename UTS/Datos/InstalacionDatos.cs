@@ -21,7 +21,7 @@ namespace UTS.Datos
                 //abrir la conexion
                 conexion.Open();
                 //Comando a ejecutar
-                SqlCommand cmd = new SqlCommand("SP_listar_instalaciones");
+                SqlCommand cmd = new SqlCommand("SP_listar_instalaciones", conexion);
                 //decir el tipo de comando
                 cmd.CommandType = CommandType.StoredProcedure;
                 //Leer el resultado de la ejecucion del procedimiento almacenado
@@ -32,7 +32,8 @@ namespace UTS.Datos
                         //una ves se esten leyendo tambien los guardaremos en la lista
                         oLista.Add(new InstalacionModel()
                         { //se utilizan las propiedades de la clase
-                            capacidad = Convert.ToInt32(dr["capacidad"]),
+                            idaula = Convert.ToInt32(dr["idaula"]),
+                        capacidad = Convert.ToInt32(dr["capacidad"]),
                             nombre = dr["nombre"].ToString(),
                             numedificio1 = Convert.ToInt32(dr["numedificio1"])
                         });
@@ -44,7 +45,7 @@ namespace UTS.Datos
 
         public InstalacionModel ConsultarInstalacion(int idaula)
         {
-            var oInstalacion = new horario_agendaModel();
+            var oInstalacion = new InstalacionModel();
             var cn = new Conexion();
 
             using (var conexion = new SqlConnection(cn.getAulasUTSContext()))
@@ -57,15 +58,15 @@ namespace UTS.Datos
                 {
                     while (dr.Read())
                     {
-                        oHorario.idaula = Convert.ToInt32(dr["idaula"]);
-                        oHorario.capacidad = Convert.ToInt32(dr["capacidad"]);
-                        oHorario.nombre = dr["nombre"].ToString();
+                        oInstalacion.idaula = Convert.ToInt32(dr["idaula"]);
+                        oInstalacion.capacidad = Convert.ToInt32(dr["capacidad"]);
+                        oInstalacion.nombre = dr["nombre"].ToString();
                         oInstalacion.numedificio1 = Convert.ToInt32(dr["numedificio1"]);
 
                     }
                 }
             }
-            return oHorario;
+            return oInstalacion;
         }
 
 
@@ -138,7 +139,8 @@ namespace UTS.Datos
             {
                 var cn = new Conexion();
                 using(var conexion=new SqlConnection(cn.getAulasUTSContext()))
-                { conexion.Open();SqlCommand cmd = new SqlCommand("SP_eliminar_instalacion", conexion);
+                { conexion.Open();
+                    SqlCommand cmd = new SqlCommand("SP_eliminar_instalacion", conexion);
                     cmd.Parameters.AddWithValue("idaula", idaula);
                     cmd.CommandType= CommandType.StoredProcedure;
                     cmd.ExecuteNonQuery();
