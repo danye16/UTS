@@ -25,7 +25,7 @@ namespace UTS.Controllers
             {
                 return View();
             }
-            model.contraseña = Utilidades.EncriptarClave(model.contraseña);
+            model.contraseña=Utilidades.EncriptarClave(model.contraseña);
             bool crearUsuario = logU.Registro(model);
             if (!crearUsuario) 
             {
