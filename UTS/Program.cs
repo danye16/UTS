@@ -53,6 +53,6 @@ app.UseAuthorization();
 
 app.MapControllerRoute(
     name: "default",
-    pattern: "{controller=LoginUSuario}/{action=CambiarContraseña}/{id?}");
+    pattern: "{controller=LoginUSuario}/{action=Registro}/{id?}");
 
 app.Run();

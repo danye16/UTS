@@ -9,11 +9,41 @@ namespace UTS.Datos
 {
     public class LoginUsuario
     {
+        //metodo para ver si existe el correo
+
+
+        public bool existeCorreo(string correo)
+        {
+            string eCorreo = "";
+            var cn = new Conexion();
+            using (var conexion = new SqlConnection(cn.getAulasUTSContext()))
+            {
+                conexion.Open();
+                SqlCommand cmd = new SqlCommand("sp_ValidarCorreo", conexion);
+                cmd.Parameters.AddWithValue("correo", correo);
+                cmd.CommandType = CommandType.StoredProcedure;
+                using (var dr = cmd.ExecuteReader())
+                {
+                    while (dr.Read())
+                    {
+                        eCorreo = dr["correo"].ToString();
+                    }
+                }
+            }
+            if (eCorreo != "")
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+        }
         //creacion del metodo registro
         public bool Registro(UsuarioModel model)
         {
             bool respuesta;
-            if (existeCorreo(model.correo))
+            if (!existeCorreo(model.correo))
             {
                 try
                 {
@@ -26,8 +56,8 @@ namespace UTS.Datos
                         cmd.Parameters.AddWithValue("apellidos", model.apellidos);
                         cmd.Parameters.AddWithValue("contraseña", model.contraseña);
                         cmd.Parameters.AddWithValue("tipo", model.tipo);
-                        cmd.Parameters.AddWithValue("correo", model.correo);
                         cmd.Parameters.AddWithValue("telefono", model.telefono);
+                        cmd.Parameters.AddWithValue("correo", model.correo);
                         cmd.CommandType = CommandType.StoredProcedure;
                         cmd.ExecuteNonQuery();
 
@@ -47,36 +77,7 @@ namespace UTS.Datos
             return respuesta;
         }
 
-        //metodo para ver si existe el correo
         
-
-         public bool existeCorreo(string correo)
-         {
-            string eCorreo = "";
-            var cn = new Conexion();
-            using(var conexion= new SqlConnection(cn.getAulasUTSContext()))
-            {
-                conexion.Open();
-                SqlCommand cmd= new SqlCommand("sp_ValidarCorreo", conexion);
-                cmd.Parameters.AddWithValue("correo", correo);
-                cmd.CommandType= CommandType.StoredProcedure;
-                using(var dr=cmd.ExecuteReader()) 
-                {
-                    while (dr.Read()) 
-                    {
-                        eCorreo = dr["correo"].ToString();
-                    }
-                }
-            }
-            if(eCorreo == "")
-            {
-                return true;
-            }
-            else
-            {
-                return false;
-            }
-         }
 
         //metodo validar usuario
 
@@ -96,12 +97,12 @@ namespace UTS.Datos
                     while (dr.Read()) 
                     {
                         usuario.clave_empleado=Convert.ToInt32(dr["clave_empleado"]);
-                       usuario.nombre=dr["nombre"].ToString();
+                        usuario.nombre=dr["nombre"].ToString();
                         usuario.apellidos = dr["apellidos"].ToString();
                         usuario.contraseña = dr["contraseña"].ToString();
                         usuario.tipo = Convert.ToBoolean(dr["nombre"]);
                         usuario.correo = dr["correo"].ToString();
-                        usuario.telefono = Convert.ToInt32(dr["telefono"]);
+                        usuario.telefono =dr["telefono"].ToString();
                     }
                 }
             }
