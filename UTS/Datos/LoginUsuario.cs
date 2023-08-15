@@ -100,9 +100,10 @@ namespace UTS.Datos
                         usuario.nombre=dr["nombre"].ToString();
                         usuario.apellidos = dr["apellidos"].ToString();
                         usuario.contraseña = dr["contraseña"].ToString();
-                        usuario.tipo = Convert.ToBoolean(dr["nombre"]);
+                        usuario.tipo = Convert.ToBoolean(dr["tipo"]);
+                        usuario.telefono = dr["telefono"].ToString();
                         usuario.correo = dr["correo"].ToString();
-                        usuario.telefono =dr["telefono"].ToString();
+                        
                     }
                 }
             }

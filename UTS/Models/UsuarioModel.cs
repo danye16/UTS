@@ -12,8 +12,8 @@
 
         public bool tipo { get; set; }
 
-        public string correo { get; set; }
-
         public string telefono { get; set; }
+
+        public string correo { get; set; }
     }
 }
