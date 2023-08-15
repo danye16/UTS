@@ -1,9 +1,14 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using System.Diagnostics;
+using System.Security.Claims;
 using UTS.Models;
 
 namespace UTS.Controllers
-{
+{    
+    [Authorize] //Etiqueta para que solo puedan entrar aquellos que esten autenticados
     public class HomeController : Controller
     {
         private readonly ILogger<HomeController> _logger;
@@ -15,7 +20,26 @@ namespace UTS.Controllers
 
         public IActionResult index()
         {
+            
+        //recibir el contexto del usuario que inicio sesion
+        ClaimsPrincipal claimUser = HttpContext.User;
+        string usuarioNombre = "";
+        //Validar si el usuario esta logueado
+        if (claimUser.Identity.IsAuthenticated)
+            {
+                //dentro de Claims se guarda la informacion de los usuarios
+                // solo selecionaremos uno.
+                usuarioNombre=claimUser.Claims.Where(c=>c.Type==ClaimTypes.Name)
+                        .Select(c=>c.Value).SingleOrDefault();
+            }
+            ViewData["Mensaje"] = usuarioNombre;
             return View();
+        }
+        //Acion para cerrarSesion
+        public async Task<IActionResult> CerrarSesion()
+        {
+            await HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
+            return RedirectToAction("Login", "LoginUsuario");
         }
         public IActionResult indexlogin()
         {

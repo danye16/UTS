@@ -1,10 +1,31 @@
 using Microsoft.EntityFrameworkCore;
+//Referencia para la autentificacion por galletas
+using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.Mvc;
 /*using UTS.Models.DB;*/
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
-builder.Services.AddControllersWithViews();
+//Borrar caché para sesión
+builder.Services.AddControllersWithViews(options=>
+{
+    options.Filters.Add(
+        new ResponseCacheAttribute
+        {
+            NoStore = true,
+            Location = ResponseCacheLocation.None,
+        });
+});
+//aqui le movemos para que agarre por coookies
+//Configuracion de la autentificacion
+builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
+    .AddCookie(options =>
+    {
+        options.LoginPath = "/LoginUsuario/Login"; //Ruta donde iniciara la aplicacion
+        options.ExpireTimeSpan = TimeSpan.FromMinutes(1);//tiempo para que expire la sesion
+    });
+
 
 /*builder.Services.AddDbContext<AulasUtsContext>(options =>
 {
@@ -25,11 +46,13 @@ app.UseHttpsRedirection();
 app.UseStaticFiles();
 
 app.UseRouting();
+//Agregar el middleware UseAuthentication
+app.UseAuthentication();
 
 app.UseAuthorization();
 
 app.MapControllerRoute(
     name: "default",
-    pattern: "{controller=Instalacion}/{action=Eliminar}/{id?}");
+    pattern: "{controller=LoginUSuario}/{action=CambiarContraseña}/{id?}");
 
 app.Run();

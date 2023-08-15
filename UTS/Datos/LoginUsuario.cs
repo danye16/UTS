@@ -114,8 +114,24 @@ namespace UTS.Datos
             bool respuesta;
             try
             {
-                var cm = new Conexion();
+                var cn = new Conexion();
+                using (var conexion = new SqlConnection(cn.getAulasUTSContext()))
+                {
+                    conexion.Open();
+                    SqlCommand cmd = new SqlCommand("sp_CambiarClave", conexion);
+                    cmd.Parameters.AddWithValue("correo", correo);
+                    cmd.Parameters.AddWithValue("contraseña", contraseña);
+                    cmd.CommandType = CommandType.StoredProcedure;
+                    cmd.ExecuteNonQuery();
+                }
+                respuesta = true;
             }
+            catch (Exception ex) 
+            {
+                string error = ex.Message;
+                respuesta = false;
+            }
+            return respuesta;
         }
 
     }

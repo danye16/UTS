@@ -6,7 +6,7 @@ namespace UTS.Recurso
 {
     public class Utilidades
     {
-        public static string EncriptarClave(string clave)
+        public static string EncriptarClave(string contraseña)
         {
             //stringbuilder permite crear cadenas de textos mas eficientes
             // a diferencia de las cadenas tradicionales estas son mutable lo que
@@ -17,7 +17,7 @@ namespace UTS.Recurso
             {
                 //codificacion UTF8
                 Encoding enc= Encoding.UTF8;
-                byte[] result=hash.ComputeHash(enc.GetBytes(clave));
+                byte[] result=hash.ComputeHash(enc.GetBytes(contraseña));
                 foreach(byte b in result) 
                 {
                     //Concatenar todo los que debe ser el resultado del cifrado
