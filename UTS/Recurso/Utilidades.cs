@@ -1,7 +1,7 @@
 ﻿using System.Security.Cryptography;
 using System.Text;
 
-
+/*
 namespace UTS.Recurso
 {
     public class Utilidades
@@ -28,3 +28,4 @@ namespace UTS.Recurso
         }
     }
 }
+*/

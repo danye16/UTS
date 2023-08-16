@@ -27,7 +27,7 @@ namespace UTS.Controllers
                 return View();
             }
             bool respuesta = _instalacionDatos.GuardarInstalacion(model);
-            // var respuesta = _instalacionDatos.GuardarInstalacion(model);
+           // var respuesta = _instalacionDatos.GuardarInstalacion(model);
             if (respuesta)
             {
                 return RedirectToAction("Listar");

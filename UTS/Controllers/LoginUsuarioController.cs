@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using UTS.Datos;
 using UTS.Models;
-using UTS.Recurso;
+// using UTS.Recurso;
 //referencias para el trabajo de Autnticacion por galletas
 using System.Security.Claims;
 using Microsoft.AspNetCore.Authentication.Cookies;
@@ -25,7 +25,7 @@ namespace UTS.Controllers
             {
                 return View();
             }
-            model.contraseña = Utilidades.EncriptarClave(model.contraseña);
+           //  model.contraseña = Utilidades.EncriptarClave(model.contraseña);
             bool crearUsuario = logU.Registro(model);
             if (!crearUsuario) 
             {
@@ -46,8 +46,9 @@ namespace UTS.Controllers
         [HttpPost]
         public async Task<IActionResult> Login(string correo, string contraseña)
         {
-            UsuarioModel usuario = logU.ValidarUsuario(correo, Utilidades.EncriptarClave(contraseña));
-            if(usuario.clave_empleado == 0)
+            UsuarioModel usuario = logU.ValidarUsuario(correo, contraseña);
+            // UsuarioModel usuario = logU.ValidarUsuario(correo, Utilidades.EncriptarClave(contraseña));
+            if (usuario.clave_empleado == 0)
             {
                 ViewData["Mensaje"] = "El correo o la contraseña esta mal joven";
                 return View();
@@ -70,7 +71,7 @@ namespace UTS.Controllers
                 CookieAuthenticationDefaults.AuthenticationScheme,
                 new ClaimsPrincipal(claimsIdentity), properties);
 
-            return RedirectToAction("Instalacion", "Listar");
+            return RedirectToAction("Listar", "Instalacion");
         }
         //Acion de clambiar contraseña
         public IActionResult CambiarContraseña()
@@ -80,7 +81,9 @@ namespace UTS.Controllers
         [HttpPost]
         public IActionResult CambiarContraseña(string correo, string contraseña)
         {
-            bool respuesta = logU.CambiarClave(correo, Utilidades.EncriptarClave(contraseña));
+            bool respuesta = logU.CambiarClave(correo, contraseña);
+
+            // bool respuesta = logU.CambiarClave(correo, Utilidades.EncriptarClave(contraseña));
             if (!respuesta) 
             {
                 ViewData["Mensaje"] = "El correo no existe joven";
