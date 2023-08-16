@@ -4,6 +4,8 @@ using System.Data;
 using Microsoft.Identity.Client;
 using System.Transactions;
 using System.Drawing.Imaging;
+using Microsoft.AspNetCore.Mvc;
+using System.ComponentModel.DataAnnotations;
 
 namespace UTS.Datos
 {

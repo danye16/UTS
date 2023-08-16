@@ -6,17 +6,7 @@ using Microsoft.AspNetCore.Mvc;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// Add services to the container.
-//Borrar caché para sesión
-builder.Services.AddControllersWithViews(options=>
-{
-    options.Filters.Add(
-        new ResponseCacheAttribute
-        {
-            NoStore = true,
-            Location = ResponseCacheLocation.None,
-        });
-});
+
 //aqui le movemos para que agarre por coookies
 //Configuracion de la autentificacion
 builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
@@ -31,6 +21,17 @@ builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationSc
 {
     options.UseSqlServer(builder.Configuration.GetConnectionString("AulasUTSContext"));
 }); */
+// Add services to the container.
+//Borrar caché para sesión
+builder.Services.AddControllersWithViews(options =>
+{
+    options.Filters.Add(
+        new ResponseCacheAttribute
+        {
+            NoStore = true,
+            Location = ResponseCacheLocation.None,
+        });
+});
 
 var app = builder.Build();
 
